@@ -28,11 +28,11 @@ app.use(cors())
 app.use('/products', productRouter);
 
 const notFound404 = (req, res, next) => {
-  res.status(404).send({ error: "Resource not found." });
+  res.status(404).json({ error: "Resource not found." });
 };
 
 const error = (error, req, res, next) => {
-  res.status(500).send({ error: error.message });
+  res.status(500).json({ error: error.message });
 };
 
 app.use(notFound404);
