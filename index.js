@@ -5,6 +5,9 @@ const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
 import productRouter from "./src/routes/products.js";
+import userRouter from "./src/routes/user.js";
+import morgan from "morgan";
+
 
 // @TODO: Move
 const notFound404 = (req, res, next) => {
@@ -26,9 +29,13 @@ mongoose.connect(mongoURI, {
     console.error('Error connecting to MongoDB:', error);
   });
 
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors())
 app.use('/products', productRouter);
+app.use('/user', userRouter);
+
+// Error handling
 app.use(notFound404);
 app.use(error);
 
