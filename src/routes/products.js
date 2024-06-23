@@ -16,10 +16,26 @@ const createProduct = async (req, res) => {
 // Get all products or filter by category
 const getProducts = async (req, res, next) => {
   try {
+    // Pagination 
+    const {
+      page = 1,
+      limit = 10,
+      sortBy,
+      sortOrder = 'asc',
+    } = req.query;
+    const sort = sortBy ? { [sortBy]: sortOrder === 'asc' ? 1 : -1 } : {};
+
+    // Filter by category (optional)
     const { category } = req.query;
     const productsFilter = category ? { category } : {};
-    const products = await Product.find(productsFilter);
-    res.json(products);
+
+    // Get product(s)
+    const products = await Product.find(productsFilter)
+      .sort(sort)
+      .limit(parseInt(limit))
+      .skip((page - 1) * limit);
+    const totalProducts = await Product.countDocuments(productsFilter);
+    res.json({ total: totalProducts, products });
   } catch (error) {
     next(error);
   }
