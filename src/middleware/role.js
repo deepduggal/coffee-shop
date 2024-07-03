@@ -1,6 +1,6 @@
 /**
  * Returns a middleware function that checks if the user has the required role
- * @param {*} requiredRoles 
+ * @param {[]} requiredRoles - A list of roles to allow
  * @returns 
  */
 function role(requiredRoles) {
